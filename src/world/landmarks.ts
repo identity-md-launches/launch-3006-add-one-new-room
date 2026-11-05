@@ -2,10 +2,10 @@
 import * as THREE from 'three';
 import { terrainHeight } from './scene';
 
-export type PlaceId = 'lastlight' | 'dawn' | 'raid' | 'almanac' | 'shed' | 'market' | 'garden' | 'stream';
+export type PlaceId = 'lastlight' | 'dawn' | 'raid' | 'race' | 'almanac' | 'shed' | 'market' | 'garden' | 'stream';
 
 const spots: Record<PlaceId, [number, number]> = {
-  lastlight: [18, 25], dawn: [40, 95], raid: [8, 160], almanac: [-22, 215], shed: [30, 285], market: [-8, 340], garden: [55, 200], stream: [-35, 100],
+  lastlight: [18, 25], dawn: [40, 95], raid: [8, 160], almanac: [-22, 215], shed: [30, 285], market: [-8, 340], garden: [55, 200], stream: [-35, 100], race: [-50, 30],
 };
 
 const toDirection = (lat: number, lon: number) => {
@@ -118,6 +118,14 @@ export function buildLandmarks(planet: THREE.Group) {
   for (const y of [0.05, 0.1, 0.15]) { const bar = box(0.04 - y * 0.15, 0.0024, 0.0024, std(0xd8d4e4), y); mast.add(bar); }
   const light = new THREE.Mesh(new THREE.IcosahedronGeometry(0.008, 1), std(0xff5a3c, { emissive: 0xff2a1a, emissiveIntensity: 3 })); light.position.y = 0.205; mast.add(light); beacon.push(light);
   place('stream', mast);
+
+  // The race track: a clay oval around a green infield, with a finish gantry.
+  const track = new THREE.Group();
+  const lane = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.009, 6, 28), std(0xb5622f)); lane.rotation.x = Math.PI / 2; lane.scale.y = 0.62; lane.position.y = 0.006; track.add(lane);
+  const infield = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.004, 24), std(0x2f8f5b)); infield.scale.z = 0.62; infield.position.y = 0.005; track.add(infield);
+  for (const x of [-0.014, 0.014]) { const post = box(0.003, 0.04, 0.003, std(0x4a3320)); post.position.x = x; post.position.z = 0.037; track.add(post); }
+  const banner = box(0.03, 0.009, 0.002, std(0xfff1c9), 0.04); banner.position.z = 0.037; track.add(banner);
+  place('race', track);
 
   return { places, blades, lamps, beacon };
 }

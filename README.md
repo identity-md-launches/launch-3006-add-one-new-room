@@ -12,6 +12,8 @@ The wheel really sets the world. Its sensor drives the planet's spin and the spe
 
 **The raid.** A weekly boss whose health is real kilometres, sized from his pace the week before. Only his distance can hurt it. Crews compete on shift score. A bot posts sunrises to Discord and answers `/sky`, `/raid`, `/almanac` and `/top` in Telegram.
 
+**Distance race.** Pick a distance, from a 5 km park run to 1,000 km of your own choosing, and follow the real hamster toward it on a drawn race track at `#race`. Only work confirmed on Ethereum moves him, so the track fills in as rounds settle. A diamond marks his usual pace, and the room shows the quickest he has covered that distance so far. The race is saved on the visitor's device.
+
 **The Almanac.** A living story with one entry for each real day and night. Each running session also presses a flower: one floret per magnet pass, with petals showing his pace through the run.
 
 **Greenhouse.** `Sunflower` is a free NFT drawn fully onchain. Settled work fills its head over about nine days of real running, it adds a leaf for each day on the wheel, and its sky is day only when his newest settled round had work.
@@ -41,8 +43,11 @@ npm install
 npm run dev        # the site
 npm run server     # the shared server, on port 8787
 npm test           # game and model logic
-npm run build
+npm run build      # typecheck, then rebuild the static export in dist/
+npm run preview    # serve dist/ on port 4173
 ```
+
+Install with Node and npm, using `npm ci` to match `package-lock.json` exactly. To rebuild the site, run `npm run build` and commit `dist/` with the source, because hosts serve the committed export and do not build it. Asset URLs are relative (`base: './'` in `vite.config.ts`), so the export works from a gateway subpath or an ENS name.
 
 The site is a static export in `dist/`, so it runs from IPFS with no server. Without a server, scores and calls stay on the player's device. To share them, host the server and build with `VITE_API_URL` set to its address.
 
@@ -61,5 +66,13 @@ forge test --match-contract ForkTest --fork-url <sepolia rpc>
 ## Limits
 
 Shift scores come from the player's browser, so they are capped and bounds checked on the server but not proven. They are worth bragging rights only. Seeds have no value and cannot leave the game.
+
+Distance race kilometres are an estimate: settled work times 878 mm per pass, the ratio `/v1/measurement/stats` reports between observed distance and work. The docs say distance comes from a fixed wheel circumference but do not name it.
+
+On 5 November 2026 `api.squeekchain.com` named a newer SqueekCore (`0xfd6c166d4b8e2962e65746a13e5a0797cd4de0c4`) than the one in `shared/chain.ts`, whose last `submitRounds` was on 4 November at 21:05 UTC. The addresses here were left as they are. Distance race therefore reads its progress from the settled anchor in `/v1/status`, and its fastest stretch from the rounds this site holds, which stop where that older core stops.
+
+## Validation
+
+Commands, results and the Better Interface review for the Distance race are in `artifacts/validation.md`, including every check that did not run.
 
 squeekchain-project: 99fdf3de-b452-46fc-a121-6dea88aa6f18

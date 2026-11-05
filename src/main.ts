@@ -6,6 +6,7 @@ import { deployRoom } from './rooms/deploy';
 import { gardenRoom } from './rooms/garden';
 import { lastlightRoom } from './rooms/lastlight';
 import { marketRoom } from './rooms/market';
+import { raceRoom } from './rooms/race';
 import { raidRoom } from './rooms/raid';
 import { shedRoom } from './rooms/shed';
 import { streamRoom } from './rooms/stream';
@@ -25,6 +26,7 @@ const ICONS: Record<string, string> = {
   lastlight: '<path d="M12 2v3M7 8h10l-1 9H8zM9 17v3h6v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="2" fill="currentColor"/>',
   dawn: '<path d="M3 17h18M6 17a6 6 0 0 1 12 0M12 5v3M4.5 9.5l2 2M19.5 9.5l-2 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   raid: '<path d="M5 4l3 3a6 6 0 0 1 8 0l3-3v9a7 7 0 0 1-14 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="9.5" cy="11" r="1.4" fill="currentColor"/><circle cx="14.5" cy="11" r="1.4" fill="currentColor"/>',
+  race: '<rect x="3" y="6" width="18" height="12" rx="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 13v5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16.5" cy="6" r="2" fill="currentColor"/>',
   almanac: '<path d="M5 4h12a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2zM5 17a2 2 0 0 1 2-2h12M9 8h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
   shed: '<path d="M4 20V10l8-6 8 6v10zM9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
   market: '<path d="M4 9l2-5h12l2 5a3 3 0 0 1-5 1 3 3 0 0 1-6 0 3 3 0 0 1-5-1zM6 12v8h12v-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>',
@@ -35,6 +37,7 @@ const PLACES: { id: PlaceId; label: string; room: Room }[] = [
   { id: 'lastlight', label: 'Night shift', room: lastlightRoom(world, () => {}) },
   { id: 'dawn', label: 'Call dawn', room: dawnRoom },
   { id: 'raid', label: 'Raid', room: raidRoom },
+  { id: 'race', label: 'Distance race', room: raceRoom },
   { id: 'almanac', label: 'Almanac', room: almanacRoom },
   { id: 'garden', label: 'Greenhouse', room: gardenRoom },
   { id: 'market', label: 'Market', room: marketRoom },

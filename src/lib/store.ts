@@ -20,11 +20,15 @@ interface Live {
   progress: number;
   frontier: number;
   round: number;
+  /** Work in rounds confirmed on Ethereum. `work` above also counts rounds still waiting to settle. */
+  settledWork: number | null;
+  settledAt: string | null;
+  installation: string | null;
   observedAt: string | null;
   error: string | null;
 }
 
-export const live: Live = { ready: false, sky: 'night', rpm: 0, speedMmS: 0, todayKm: 0, work: 0, height: 0, progress: 0, frontier: 0, round: roundAt(Date.now() / 1000), observedAt: null, error: null };
+export const live: Live = { ready: false, sky: 'night', rpm: 0, speedMmS: 0, todayKm: 0, work: 0, height: 0, progress: 0, frontier: 0, round: roundAt(Date.now() / 1000), settledWork: null, settledAt: null, installation: null, observedAt: null, error: null };
 
 export const history: RoundHistory = { frontier: 0, active: [] };
 export let model: Model | null = null;
@@ -82,6 +86,9 @@ async function poll() {
       live.height = Number(anchor.blockHeight);
       live.progress = Number(anchor.blockProgress) / 1e9;
       live.frontier = Number(anchor.settledThroughRound);
+      live.settledWork = Number(anchor.cumulativeWork);
+      live.settledAt = anchor.confirmedAt ?? null;
+      live.installation = body.installationId ?? null;
     }
   } catch (e) {
     live.error = (e as Error).message;
